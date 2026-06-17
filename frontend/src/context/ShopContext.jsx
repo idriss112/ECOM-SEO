@@ -10,7 +10,7 @@ export const ShopContext = createContext();
 const ShopContextProvider = (props) => { 
     const currency = '$'; 
     const delivery_fee = 10; 
-    const backendUrl = import.meta.env.VITE_BACKEND_URL
+    const backendUrl = (import.meta.env.VITE_BACKEND_URL || '').replace(/\/+$/, '')
     console.log(backendUrl)
     const [search, setSearch] = useState('');
     const [showSearch, setShowSearch] = useState(false);
@@ -43,7 +43,7 @@ const ShopContextProvider = (props) => {
                 console.log(token)
                 console.log(itemId)
                 console.log(size)
-                await axios.post(backendUrl + '/api/cart/add', {itemId, size}, {headers:{token}})
+                await axios.post(`${backendUrl}/api/cart/add`, {itemId, size}, {headers:{token}})
             }
             catch(error){
                 console.log(error);
@@ -75,7 +75,7 @@ const ShopContextProvider = (props) => {
         setCartItems(cartData);
         if(token){
             try{
-                await axios.post(backendUrl + 'api/cart/update', {itemId, size, quantity}, {headers: {token}})
+                await axios.post(`${backendUrl}/api/cart/update`, {itemId, size, quantity}, {headers: {token}})
             }
             catch(error){
                 console.log(error);
@@ -103,7 +103,7 @@ const ShopContextProvider = (props) => {
 
     const getProductsData = async () => {
         try {
-            const response = await axios.get(backendUrl + '/api/product/list')
+            const response = await axios.get(`${backendUrl}/api/product/list`)
             if(response.data.success){
                 setProducts(response.data.products);
             }
@@ -119,7 +119,7 @@ const ShopContextProvider = (props) => {
 
     const getUserCart = async (token) => {
         try{
-            const response = await axios.post(backendUrl + '/api/cart/get', {}, {headers: {token}})
+            const response = await axios.post(`${backendUrl}/api/cart/get`, {}, {headers: {token}})
             if(response.data.success){
                 setCartItems(response.data.cartData);
             }

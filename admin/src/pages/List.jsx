@@ -8,7 +8,7 @@ const List = () => {
   const [list, setList] = useState([])
   const fetchList = async()=>{
     try{
-      const response = await axios.get(backendUrl + 'api/product/list')
+      const response = await axios.get(`${backendUrl}/api/product/list`)
       if(response.data.success){
         setList(response.data.products)
       }
@@ -37,7 +37,7 @@ const List = () => {
       }
   
       const response = await axios.post(
-        backendUrl + 'api/product/remove',
+        `${backendUrl}/api/product/remove`,
         { id },
         { headers: { token } }  // ✅ Pass token properly
       );
